@@ -2,134 +2,203 @@
 
 import { useState, useEffect } from "react"
 import { HiMenu, HiX } from "react-icons/hi"
-import { motion } from "framer-motion"
-import { Moon, Sun } from "lucide-react"
-import { useTheme } from "next-themes"
-import { fadeIn } from "../utils/motion"
+import { motion, AnimatePresence } from "framer-motion"
+import { ChevronDown } from "lucide-react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [activeLink, setActiveLink] = useState("#home")
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
-    setMounted(true)
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false)
+  }, [pathname])
+
   const navLinks = [
-    { href: "#home", label: "Home" },
-    { href: "#about", label: "About Us" },
-    { href: "#services", label: "Our Services" },
-    { href: "#testimonials", label: "Client Testimonials" },
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
+    {
+      href: "/products",
+      label: "Products",
+      hasDropdown: true,
+      dropdownItems: [
+        { href: "/products?category=food", label: "Food & Agricultural", icon: "🌾" },
+        { href: "/products?category=textiles", label: "Textiles & Apparel", icon: "🧵" },
+        { href: "/products?category=chemicals", label: "Chemicals & Fertilizers", icon: "⚗️" },
+        { href: "/products?category=specialty", label: "Specialty Goods", icon: "🎯" },
+      ]
+    },
+    { href: "/industries", label: "Industries" },
+    { href: "/contact", label: "Contact" },
   ]
+
+  const isActive = (href) => {
+    if (href === "/") return pathname === "/"
+    return pathname.startsWith(href)
+  }
 
   return (
     <motion.nav
-      variants={fadeIn("down", 0.2)}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true }}
-      className="fixed top-0 left-0 right-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm z-50 border-b border-gray-100 dark:border-gray-800 shadow-sm dark:shadow-gray-900/20"
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.3 }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+        ? "top-4 mx-4 sm:mx-8 lg:mx-12 rounded-2xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl shadow-2xl border border-white/20 dark:border-gray-700/30"
+        : "bg-transparent"
+        }`}
     >
-      <div className="w-full flex justify-between items-center container mx-auto px-4 sm:px-6 lg:px-8 md:h-20 h-16">
-        {/* Logo */}
-        <motion.div variants={fadeIn("right", 0.3)} className="flex items-center gap-1 cursor-pointer">
-          <p className="font-bold text-2xl">Al Rooha</p>
-        </motion.div>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative">
+              <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 dark:from-blue-400 dark:via-blue-500 dark:to-blue-600 bg-clip-text text-transparent transition-all group-hover:scale-105">
+                AL ROOHA
+              </div>
+              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 group-hover:w-full transition-all duration-300" />
+            </div>
+          </Link>
 
-        {/* Mobile Menu Button & Theme Toggle */}
-        <motion.div variants={fadeIn("left", 0.3)} className="md:hidden flex items-center gap-2">
-          {/* {mounted && (
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-              aria-label="Toggle theme"
-            >
-              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </motion.button>
-          )} */}
-          <motion.button className="p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <HiX className="h-6 w-6 dark:text-white" /> : <HiMenu className="h-6 w-6 dark:text-white" />}
-          </motion.button>
-        </motion.div>
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center gap-1">
+            {navLinks.map((link, index) => (
+              link.hasDropdown ? (
+                <div key={index} className="relative group">
+                  <button
+                    className={`px-4 py-2 text-sm font-medium rounded-lg transition-all flex items-center gap-1.5 ${isActive(link.href)
+                      ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20"
+                      : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                      }`}
+                  >
+                    {link.label}
+                    <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180 duration-200" />
+                  </button>
 
-        {/* Navigation Links - Desktop */}
-        <motion.div variants={fadeIn("down", 0.3)} className="hidden md:flex items-center gap-10">
-          {navLinks.map((link, index) => (
-            <motion.a
-              key={index}
-              variants={fadeIn("down", 0.1 * (index + 1))}
-              href={link.href}
-              onClick={() => setActiveLink(link.href)}
-              className={`text-sm font-medium relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-blue-600 dark:after:bg-blue-400 after:transition-all
-                ${activeLink === link.href ? "text-blue-600 dark:text-blue-400 after:w-full" : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"}`}
-            >
-              {link.label}
-            </motion.a>
-          ))}
-        </motion.div>
+                  {/* Dropdown Menu */}
+                  <div className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-100 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2">
+                    <div className="p-2">
+                      {link.dropdownItems.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={item.href}
+                          className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-all group/item"
+                        >
+                          <span className="text-xl">{item.icon}</span>
+                          <span className="font-medium">{item.label}</span>
+                          <ChevronDown className="w-4 h-4 ml-auto -rotate-90 opacity-0 group-hover/item:opacity-100 transition-opacity" />
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={index}
+                  href={link.href}
+                  className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${isActive(link.href)
+                    ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20"
+                    : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                    }`}
+                >
+                  {link.label}
+                </Link>
+              )
+            ))}
+          </div>
 
-        {/* Desktop Theme Toggle & CTA */}
-        <motion.div variants={fadeIn("left", 0.3)} className="hidden md:flex items-center gap-4">
-          {/* {mounted && (
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              aria-label="Toggle theme"
-            >
-              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </motion.button>
-          )} */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-blue-600 dark:bg-blue-500 text-white px-6 py-2.5 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 text-sm font-medium transition-all hover:shadow-lg hover:shadow-blue-100 dark:hover:shadow-blue-500/20"
+          {/* CTA Button - Desktop */}
+          <div className="hidden lg:flex items-center gap-4">
+            <Link href="/contact">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-semibold shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all overflow-hidden group"
+              >
+                <span className="relative z-10">Get Quote</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-blue-800 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </motion.button>
+            </Link>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            aria-label="Toggle menu"
           >
-            <a href="#newsletter">Get in touch</a>
-          </motion.button>
-        </motion.div>
+            {isMenuOpen ? (
+              <HiX className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+            ) : (
+              <HiMenu className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
-      {isMenuOpen && (
-        <motion.div
-          variants={fadeIn("down", 0.2)}
-          initial="hidden"
-          animate="show"
-          className="md:hidden bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 py-4"
-        >
-          <motion.div variants={fadeIn("down", 0.3)} className="container mx-auto px-4 space-y-4">
-            {navLinks.map((link, index) => (
-              <motion.a
-                key={index}
-                variants={fadeIn("right", 0.1 * (index + 1))}
-                href={link.href}
-                onClick={() => {
-                  setActiveLink(link.href)
-                  setIsMenuOpen(false)
-                }}
-                className={`block text-sm font-medium py-2
-                  ${activeLink === link.href ? "text-blue-600 dark:text-blue-400" : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"}`}
-              >
-                {link.label}
-              </motion.a>
-            ))}
-            <motion.button
-              variants={fadeIn("up", 0.4)}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full bg-blue-600 dark:bg-blue-500 text-white px-6 py-2.5 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 text-sm font-medium transition-all hover:shadow-lg hover:shadow-blue-100 dark:hover:shadow-blue-500/20"
-            >
-              Get in touch
-            </motion.button>
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="lg:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900"
+          >
+            <div className="container mx-auto px-4 py-4 space-y-1">
+              {navLinks.map((link, index) => (
+                <div key={index}>
+                  {link.hasDropdown ? (
+                    <div className="space-y-1">
+                      <div className="px-4 py-2 text-sm font-semibold text-gray-500 dark:text-gray-400">
+                        {link.label}
+                      </div>
+                      {link.dropdownItems.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={item.href}
+                          className="flex items-center gap-3 px-6 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-all"
+                        >
+                          <span className="text-lg">{item.icon}</span>
+                          <span>{item.label}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className={`block px-4 py-2.5 text-sm font-medium rounded-lg transition-all ${isActive(link.href)
+                        ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20"
+                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                        }`}
+                    >
+                      {link.label}
+                    </Link>
+                  )}
+                </div>
+              ))}
+
+              {/* Mobile CTA */}
+              <Link href="/contact" className="block pt-4">
+                <button className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-semibold shadow-lg shadow-blue-500/30 transition-all">
+                  Get Quote
+                </button>
+              </Link>
+            </div>
           </motion.div>
-        </motion.div>
-      )}
+        )}
+      </AnimatePresence>
     </motion.nav>
   )
 }

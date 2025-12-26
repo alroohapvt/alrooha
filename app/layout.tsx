@@ -4,9 +4,15 @@ import { ThemeProvider } from "next-themes"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Al-Rooha Trade",
-  description: "Global Multi-Commodity Import & Export Trading Solutions",
-    generator: 'v0.app'
+  title: "AL ROOHA - Global Export-Import Trading Company",
+  description: "AL ROOHA is a multi-category export-import company dealing in food grains, textiles, chemicals, and specialty goods. Quality products delivered to global markets with reliability and compliance.",
+  keywords: ["export", "import", "trading", "rice", "basmati", "textiles", "chemicals", "fertilizers", "India", "global trade"],
+  authors: [{ name: "AL ROOHA PRIVATE LIMITED" }],
+  openGraph: {
+    title: "AL ROOHA - Global Export-Import Trading Company",
+    description: "Multi-category export-import solutions for food, textiles, chemicals, and specialty goods",
+    type: "website",
+  },
 }
 
 export default function RootLayout({

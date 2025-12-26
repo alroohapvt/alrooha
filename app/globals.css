@@ -118,17 +118,86 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
   }
 }
 
-html {
+/* Prevent horizontal scroll - robust solution */
+/* html {
+  overflow-x: hidden;
+  width: 100%;
   scroll-behavior: smooth;
-  scroll-padding-top: 100px;
+  scroll-padding-top: 80px;
+} */
+
+body {
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
 }
 
-/* customize container here using tailwindcss */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove scroll-behavior for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 5px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Container */
 .section-container {
   @apply px-4 sm:px-6 lg:px-8 py-16 container mx-auto;
+}
+
+/* Smooth transitions for all interactive elements */
+a,
+button,
+input,
+textarea,
+select {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Focus visible for accessibility */
+*:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }
