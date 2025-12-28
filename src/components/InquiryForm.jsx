@@ -10,6 +10,7 @@ const InquiryForm = () => {
         name: "",
         company: "",
         email: "",
+        phone: "",
         category: "",
         message: ""
     })
@@ -28,7 +29,7 @@ const InquiryForm = () => {
         setStatus({ type: "", message: "" })
 
         // Validation
-        if (!formData.name || !formData.company || !formData.email || !formData.category || !formData.message) {
+        if (!formData.name || !formData.company || !formData.email || !formData.phone || !formData.category || !formData.message) {
             setStatus({ type: "error", message: "Please fill in all required fields" })
             setIsSubmitting(false)
             return
@@ -42,21 +43,44 @@ const InquiryForm = () => {
             return
         }
 
-        // Simulate form submission (replace with actual API call)
-        setTimeout(() => {
+        try {
+            const res = await fetch('/api/inquiry', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+
+            const data = await res.json()
+
+            if (res.ok) {
+                setStatus({
+                    type: "success",
+                    message: "Thank you for your inquiry! We'll get back to you within 24 hours."
+                })
+                setFormData({
+                    name: "",
+                    company: "",
+                    email: "",
+                    phone: "",
+                    category: "",
+                    message: ""
+                })
+            } else {
+                setStatus({
+                    type: "error",
+                    message: data.error || "Something went wrong. Please try again."
+                })
+            }
+        } catch (error) {
             setStatus({
-                type: "success",
-                message: "Thank you for your inquiry! We'll get back to you within 24 hours."
+                type: "error",
+                message: "Failed to send inquiry. Please try again later."
             })
-            setFormData({
-                name: "",
-                company: "",
-                email: "",
-                category: "",
-                message: ""
-            })
+        } finally {
             setIsSubmitting(false)
-        }, 1500)
+        }
     }
 
     return (
@@ -129,21 +153,42 @@ const InquiryForm = () => {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                             {/* Email */}
-                            <div>
-                                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                                    Email Address <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                    placeholder="john@company.com"
-                                />
+                            <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {/* Email */}
+                                <div>
+                                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                        Email Address <span className="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        required
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                        placeholder="john@company.com"
+                                    />
+                                </div>
+
+                                {/* Phone */}
+                                <div>
+                                    <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                        Phone Number <span className="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        id="phone"
+                                        name="phone"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                        required
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                        placeholder="+91 98765 43210"
+                                    />
+                                </div>
                             </div>
+
 
                             {/* Product Category */}
                             <div>
@@ -188,8 +233,8 @@ const InquiryForm = () => {
                         {/* Status Message */}
                         {status.message && (
                             <div className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${status.type === "success"
-                                    ? "bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-800"
-                                    : "bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800"
+                                ? "bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-800"
+                                : "bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800"
                                 }`}>
                                 {status.type === "success" ? (
                                     <CheckCircle className="w-5 h-5" />

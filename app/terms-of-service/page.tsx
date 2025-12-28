@@ -67,7 +67,7 @@ export default function TermsOfServicePage() {
 
                         <h3>8. Contact Us</h3>
                         <p>
-                            If you have any questions about these Terms, please contact us at info@alrooha.com.
+                            If you have any questions about these Terms, please contact us at info@alroohapvt.com.
                         </p>
                     </div>
                 </div>

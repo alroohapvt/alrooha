@@ -65,7 +65,7 @@ export default function PrivacyPolicyPage() {
                         </p>
                         <p>
                             <strong>AL ROOHA PRIVATE LIMITED</strong><br />
-                            Email: info@alrooha.com<br />
+                            Email: info@alroohapvt.com<br />
                             Phone: +91 123 456 7890
                         </p>
                     </div>
