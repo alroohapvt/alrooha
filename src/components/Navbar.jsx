@@ -171,9 +171,9 @@ const Navbar = () => {
             aria-label="Toggle menu"
           >
             {isMenuOpen ? (
-              <HiX className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+              <HiX className={`w-6 h-6 ${isScrolled ? "text-gray-700 dark:text-gray-300" : "text-white"}`} />
             ) : (
-              <HiMenu className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+              <HiMenu className={`w-6 h-6 ${isScrolled ? "text-gray-700 dark:text-gray-300" : "text-white"}`} />
             )}
           </button>
         </div>

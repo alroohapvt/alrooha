@@ -65,11 +65,14 @@ export default function ContactPage() {
                                 <Phone className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                             </div>
                             <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Phone</h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-300">
-                                <a href={`tel:${companyInfo.contact.phone}`} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                            <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                                <a href={`tel:${companyInfo.contact.phone}`} className="block hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                                     {companyInfo.contact.phone}
                                 </a>
-                            </p>
+                                <a href={`tel:${companyInfo.contact.phone2}`} className="block hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                    {companyInfo.contact.phone2}
+                                </a>
+                            </div>
                         </motion.div>
 
                         <motion.div

@@ -131,11 +131,18 @@ const Footer = () => {
                   {companyInfo.address.pincode}, {companyInfo.address.country}
                 </span>
               </li>
-              <li className="flex items-center gap-3 text-sm">
-                <Phone className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <a href={`tel:${companyInfo.contact.phone}`} className="text-gray-300 hover:text-blue-400 transition-colors">
-                  {companyInfo.contact.phone}
-                </a>
+              <li className="flex flex-col gap-1 text-sm">
+                <div className="flex items-center gap-3">
+                  <Phone className="w-5 h-5 text-blue-400 flex-shrink-0" />
+                  <a href={`tel:${companyInfo.contact.phone}`} className="text-gray-300 hover:text-blue-400 transition-colors">
+                    {companyInfo.contact.phone}
+                  </a>
+                </div>
+                <div className="flex items-center gap-3 ml-8">
+                  <a href={`tel:${companyInfo.contact.phone2}`} className="text-gray-300 hover:text-blue-400 transition-colors">
+                    {companyInfo.contact.phone2}
+                  </a>
+                </div>
               </li>
               <li className="flex items-center gap-3 text-sm">
                 <Mail className="w-5 h-5 text-blue-400 flex-shrink-0" />

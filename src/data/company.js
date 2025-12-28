@@ -14,7 +14,8 @@ export const companyInfo = {
   },
 
   contact: {
-    phone: "+91-8574367776", // Update with actual phone
+    phone: "+91-8574367776",
+    phone2: "+91-7860968769",
     email: "info@alroohapvt.com", // Update with actual email
     website: "www.alrooha.com"
   },
