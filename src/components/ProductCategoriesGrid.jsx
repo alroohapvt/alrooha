@@ -48,9 +48,9 @@ const ProductCategoriesGrid = () => {
                             viewport={{ once: true }}
                             className="group"
                         >
-                            <div className="relative bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 dark:border-gray-800">
+                            <div className="relative h-full flex flex-col bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 dark:border-gray-800">
                                 {/* Image */}
-                                <div className="relative h-64 overflow-hidden">
+                                <div className="relative h-64 overflow-hidden shrink-0">
                                     <Image
                                         src={category.image}
                                         alt={category.name}
@@ -66,11 +66,11 @@ const ProductCategoriesGrid = () => {
                                 </div>
 
                                 {/* Content */}
-                                <div className="p-6">
+                                <div className="p-6 flex flex-col flex-grow">
                                     <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white">
                                         {category.name}
                                     </h3>
-                                    <p className="text-gray-600 dark:text-gray-300 mb-4">
+                                    <p className="text-gray-600 dark:text-gray-300 mb-4 flex-grow">
                                         {category.description}
                                     </p>
 
@@ -87,7 +87,7 @@ const ProductCategoriesGrid = () => {
                                     {/* CTA Button */}
                                     <Link
                                         href={category.cta.link}
-                                        className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all group-hover:shadow-lg"
+                                        className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all group-hover:shadow-lg mt-auto"
                                     >
                                         {category.cta.text}
                                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

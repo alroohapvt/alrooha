@@ -3,14 +3,22 @@
 import { useState, useEffect } from "react"
 import { HiMenu, HiX } from "react-icons/hi"
 import { motion, AnimatePresence } from "framer-motion"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, Moon, Sun } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useTheme } from "next-themes"
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -63,10 +71,16 @@ const Navbar = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
             <div className="relative">
-              <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 dark:from-blue-400 dark:via-blue-500 dark:to-blue-600 bg-clip-text text-transparent transition-all group-hover:scale-105">
+              <div className={`text-2xl md:text-3xl font-bold bg-clip-text text-transparent transition-all group-hover:scale-105 ${isScrolled
+                ? "bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 dark:from-blue-400 dark:via-blue-500 dark:to-blue-600"
+                : "bg-white text-white bg-none" // Force white when transparent
+                }`}>
                 AL ROOHA
               </div>
-              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 group-hover:w-full transition-all duration-300" />
+              <div className={`absolute -bottom-1 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-300 ${isScrolled
+                ? "bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600"
+                : "bg-white"
+                }`} />
             </div>
           </Link>
 
@@ -77,8 +91,12 @@ const Navbar = () => {
                 <div key={index} className="relative group">
                   <button
                     className={`px-4 py-2 text-sm font-medium rounded-lg transition-all flex items-center gap-1.5 ${isActive(link.href)
-                      ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20"
-                      : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                      ? isScrolled
+                        ? "text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 font-bold"
+                        : "text-white bg-white/20 font-bold"
+                      : isScrolled
+                        ? "text-gray-800 dark:text-gray-200 hover:text-blue-700 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                        : "text-white/90 hover:text-white hover:bg-white/10"
                       }`}
                   >
                     {link.label}
@@ -107,8 +125,12 @@ const Navbar = () => {
                   key={index}
                   href={link.href}
                   className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${isActive(link.href)
-                    ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20"
-                    : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                    ? isScrolled
+                      ? "text-blue-700 dark:text-blue-400 font-bold"
+                      : "text-white bg-white/20 font-bold"
+                    : isScrolled
+                      ? "text-gray-800 dark:text-gray-200 hover:text-black dark:hover:text-white"
+                      : "text-white/90 hover:text-white hover:bg-white/10"
                     }`}
                 >
                   {link.label}
@@ -117,8 +139,19 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* CTA Button - Desktop */}
           <div className="hidden lg:flex items-center gap-4">
+            {mounted && (
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className={`p-2 rounded-full transition-all ${isScrolled
+                  ? "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700"
+                  : "bg-white/10 text-white hover:bg-white/20"
+                  }`}
+                aria-label="Toggle theme"
+              >
+                {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
+            )}
             <Link href="/contact">
               <motion.button
                 whileHover={{ scale: 1.05 }}

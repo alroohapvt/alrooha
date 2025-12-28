@@ -28,7 +28,7 @@ export const products = [
         category: "food",
         shortDescription: "High-quality non-basmati rice varieties for diverse culinary needs",
         fullDescription: "Our non-basmati rice varieties include Sona Masoori, IR64, and other popular grades. These varieties are perfect for everyday cooking and are highly sought after in international markets for their consistent quality and competitive pricing.",
-        image: "/images/products/product-basmati-rice.jpg",
+        image: "/images/products/product-non-basmati-rice.jpg",
         specifications: {
             "Varieties": "Sona Masoori, IR64, Swarna",
             "Purity": "95% minimum",
@@ -47,7 +47,7 @@ export const products = [
         category: "food",
         shortDescription: "IQF frozen vegetables maintaining freshness and nutritional value",
         fullDescription: "Our range of frozen vegetables includes peas, potatoes, mixed vegetables, and more. Using IQF (Individually Quick Frozen) technology, we preserve the natural taste, color, and nutritional value of fresh vegetables.",
-        image: "/images/products/product-basmati-rice.jpg",
+        image: "/images/products/product-frozen-vegetables.jpg",
         specifications: {
             "Process": "IQF Technology",
             "Storage Temperature": "-18°C",
@@ -68,7 +68,7 @@ export const products = [
         category: "textiles",
         shortDescription: "High-quality cotton yarn in various counts for textile manufacturing",
         fullDescription: "Our cotton yarn is manufactured using the finest cotton fibers, ensuring superior strength, uniformity, and minimal defects. Available in various counts to meet different textile manufacturing requirements.",
-        image: "/images/products/product-cotton-fabric.jpg",
+        image: "/images/products/product-cotton-yarn.jpg",
         specifications: {
             "Counts Available": "20s, 30s, 40s, 60s",
             "Type": "Combed & Carded",
@@ -127,7 +127,7 @@ export const products = [
         category: "chemicals",
         shortDescription: "High-purity industrial chemicals for various applications",
         fullDescription: "We supply a range of industrial chemicals including organic and inorganic compounds for manufacturing and processing industries. All products meet international quality standards.",
-        image: "/images/products/product-fertilizer.jpg",
+        image: "/images/products/product-industrial-chemicals.jpg",
         specifications: {
             "Purity": "98% minimum",
             "Grade": "Industrial/Technical",
@@ -147,7 +147,7 @@ export const products = [
         category: "specialty",
         shortDescription: "Handcrafted traditional Indian musical instruments",
         fullDescription: "Authentic handcrafted musical instruments made by skilled artisans. Each piece is carefully crafted to ensure superior sound quality and aesthetic appeal.",
-        image: "/images/products/product-basmati-rice.jpg",
+        image: "/images/products/product-musical-instruments.jpg",
         specifications: {
             "Types": "Tabla, Sitar, Harmonium, etc.",
             "Material": "Premium quality wood and materials",

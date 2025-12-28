@@ -57,6 +57,7 @@ const HeroBannerSlider = () => {
                             priority={currentSlide === 0}
                         />
                         {/* Gradient Overlay */}
+                        <div className="absolute inset-0 bg-black/50" />
                         <div className={`absolute inset-0 ${bannerSlides[currentSlide].gradient}`} />
                     </div>
 
@@ -132,8 +133,8 @@ const HeroBannerSlider = () => {
                         key={index}
                         onClick={() => goToSlide(index)}
                         className={`transition-all rounded-full ${index === currentSlide
-                                ? "w-12 h-3 bg-white"
-                                : "w-3 h-3 bg-white/50 hover:bg-white/75"
+                            ? "w-12 h-3 bg-white"
+                            : "w-3 h-3 bg-white/50 hover:bg-white/75"
                             }`}
                         aria-label={`Go to slide ${index + 1}`}
                     />
