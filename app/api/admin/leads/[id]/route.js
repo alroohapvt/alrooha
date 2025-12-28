@@ -12,7 +12,7 @@ export async function DELETE(req, { params }) {
 
     try {
         await dbConnect()
-        const { id } = params
+        const { id } = await params
         const deletedLead = await Lead.findByIdAndDelete(id)
 
         if (!deletedLead) {
@@ -35,7 +35,7 @@ export async function PATCH(req, { params }) {
 
     try {
         await dbConnect()
-        const { id } = params
+        const { id } = await params
         const body = await req.json()
         const { status } = body
 
